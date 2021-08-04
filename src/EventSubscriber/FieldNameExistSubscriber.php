@@ -48,7 +48,6 @@ class FieldNameExistSubscriber implements EventSubscriberInterface
     {
         $result = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
-        $entity = get_class($event->getControllerResult());
 
         if (
             !$result instanceof Anime &&
@@ -58,6 +57,8 @@ class FieldNameExistSubscriber implements EventSubscriberInterface
         ) {
             return;
         }
+
+        $entity = get_class($event->getControllerResult());
 
         $find = $this->entityManager->getRepository($entity)->findBy(['name' => $result->getName()]);
         if (!empty($find)) {

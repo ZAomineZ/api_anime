@@ -89,6 +89,33 @@ class MyAlteration implements NormalizerInterface
         ];
         $docs['paths']['/api/characters/genre/{genre}']['get'] = array_merge($pathGetCharacterByGenre, $customDocsGetCharacterByGenre);
 
+        $pathGetAnimesByTag = $docs['paths']['/api/animes/{tag}/tag']['get'];
+        $customDocsGetAnimesByTag = [
+            'parameters' => [
+                [
+                    'name' => 'tag',
+                    'in' => 'path',
+                    'description' => 'Trouver les animes en fonction de votre tag.',
+                    'type' => 'string',
+                    'required' => true,
+                    'example' => 'combat'
+                ]
+            ],
+            'responses' => [
+                200 => [
+                    'description' => 'Voici les animes en fontion de votre tag',
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                '$ref' => '#components/schemas/Anime-read.character'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $docs['paths']['/api/animes/{tag}/tag']['get'] = array_merge($pathGetAnimesByTag, $customDocsGetAnimesByTag);
+
 
         // Sort the schemas and the endpoints, because that's nicer
         ksort($docs['components']['schemas']);

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\AnimeByTag;
 use App\Repository\AnimeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -47,6 +48,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             ]
         ]
     ],
+    'get_by_tag' => [
+        'method' => 'GET',
+        'path' => '/animes/{tag}/tag',
+        'controller' => AnimeByTag::class,
+        'normalization_context' => ['groups' => ['read:anime']],
+        'read' => false
+    ]
 ],
     itemOperations: ['get', 'put', 'delete'],
     denormalizationContext: [

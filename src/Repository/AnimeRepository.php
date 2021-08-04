@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Anime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
