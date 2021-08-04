@@ -9,16 +9,20 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\CharacterByGenre;
 use App\Controller\CharacterBySlug;
+use App\Controller\Media\CreateMediaCharacter;
 use App\Repository\CharacterRepository;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=CharacterRepository::class)
  * @ORM\Table(name="`character`")
+ * @Vich\Uploadable()
  */
 #[
     ApiResource(
@@ -57,6 +61,31 @@ use Symfony\Component\Validator\Constraints as Assert;
                 ]
             ]
         ],
+        'post_image' => [
+            'method' => 'POST',
+            'path' => '/characters/{id}/image',
+            'deserialize' => false,
+            'read' => false,
+            'controller' => CreateMediaCharacter::class,
+            'validation_groups' => ['media:character_object:create'],
+            'openapi_context' => [
+                'requestBody' => [
+                    'content' => [
+                        'multipart/form-data' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'file' => [
+                                        'type' => 'string',
+                                        'format' => 'binary'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ],
         'get_by_genre' => [
             'method' => 'GET',
             'path' => '/characters/genre/{genre}',
@@ -67,7 +96,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
         itemOperations: [
         'get' => [
-            'normalization_context' => ['groups' => ['read:character']]
+            'normalization_context' => ['groups' => ['read:character', 'read:image']]
         ],
         'put',
         'delete',
@@ -104,7 +133,7 @@ class Character
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    #[Groups(['read:character'])]
+    #[Groups(['read:character', 'read:image'])]
     private ?int $id;
 
     /**
@@ -190,7 +219,7 @@ class Character
     /**
      * @ORM\Column(type="integer")
      */
-     #[Groups(['create:character', 'read:character'])]
+    #[Groups(['create:character', 'read:character'])]
     private ?int $age;
 
     /**
@@ -198,6 +227,30 @@ class Character
      */
     #[Groups(['create:character', 'read:character'])]
     private ?int $height;
+
+    /**
+     * @var File|null
+     *
+     * @Vich\UploadableField(mapping="character_object", fileNameProperty="filePath")
+     */
+    #[
+        Groups(['create:character']),
+        Assert\NotNull(groups: ['media:character_object:create'])
+    ]
+    private ?File $file = null;
+
+    /**
+     * @var string|null
+     */
+    private ?string $filePath = null;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    #[Groups(['read:character', 'read:image'])]
+    private ?string $fileUrl = null;
 
     /**
      * Character constructor.
@@ -399,5 +452,62 @@ class Character
     public function getHeight(): ?int
     {
         return $this->height;
+    }
+
+    /**
+     * @return File|null
+     */
+    public function getFile(): ?File
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param File|null $file
+     * @return Character
+     */
+    public function setFile(?File $file): self
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFilePath(): ?string
+    {
+        return $this->filePath;
+    }
+
+    /**
+     * @param string|null $filePath
+     * @return Character
+     */
+    public function setFilePath(?string $filePath): self
+    {
+        $this->filePath = $filePath;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFileUrl(): ?string
+    {
+        return $this->fileUrl;
+    }
+
+    /**
+     * @param string|null $fileUrl
+     * @return Character
+     */
+    public function setFileUrl(?string $fileUrl): self
+    {
+        $this->fileUrl = $fileUrl;
+
+        return $this;
     }
 }

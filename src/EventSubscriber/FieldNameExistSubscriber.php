@@ -49,6 +49,10 @@ class FieldNameExistSubscriber implements EventSubscriberInterface
         $result = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
+        if ($event->getRequest()->files->get('file')) {
+            return;
+        }
+
         if (
             !$result instanceof Anime &&
             !$result instanceof Character &&

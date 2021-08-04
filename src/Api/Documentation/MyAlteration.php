@@ -116,6 +116,22 @@ class MyAlteration implements NormalizerInterface
         ];
         $docs['paths']['/api/animes/{tag}/tag']['get'] = array_merge($pathGetAnimesByTag, $customDocsGetAnimesByTag);
 
+        $pathPostCharacterImage = $docs['paths']['/api/characters/{id}/image']['post'];
+        $customDocPostCharacterImage = [
+            'responses' => [
+                200 => [
+                    'description' => 'Voici l\'image du personnage courant',
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                '$ref' => '#components/schemas/Anime-read.character_read.image'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $docs['paths']['/api/characters/{id}/image']['post'] = array_merge($pathPostCharacterImage, $customDocPostCharacterImage);
 
         // Sort the schemas and the endpoints, because that's nicer
         ksort($docs['components']['schemas']);
