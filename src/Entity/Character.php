@@ -38,6 +38,8 @@ use Symfony\Component\Validator\Constraints as Assert;
                                     'slug' => ['type' => 'string'],
                                     'content' => ['type' => 'string'],
                                     'genre' => ['type' => 'string'],
+                                    'age' => ['type' => 'int'],
+                                    'height' => ['type' => 'int'],
                                     'anime' => ['type' => 'string']
                                 ],
                                 'example' => [
@@ -45,6 +47,8 @@ use Symfony\Component\Validator\Constraints as Assert;
                                     'slug' => 'luffy',
                                     'content' => 'Description de test...',
                                     'genre' => 'homme|femme',
+                                    'age' => 20,
+                                    'height' => 185,
                                     'anime' => '/api/{entity}/{param}'
                                 ]
                             ]
@@ -100,7 +104,7 @@ class Character
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    #[Groups(['read:character', 'read:item'])]
+    #[Groups(['read:character'])]
     private ?int $id;
 
     /**
@@ -182,6 +186,18 @@ class Character
      */
     #[Groups(['read:character'])]
     private ?DateTimeInterface $publishedAt;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+     #[Groups(['create:character', 'read:character'])]
+    private ?int $age;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    #[Groups(['create:character', 'read:character'])]
+    private ?int $height;
 
     /**
      * Character constructor.
@@ -345,5 +361,43 @@ class Character
     public function setGenre(?string $genre): void
     {
         $this->genre = $genre;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    /**
+     * @param int $age
+     * @return $this
+     */
+    public function setAge(int $age): self
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    /**
+     * @param int $height
+     * @return $this
+     */
+    public function setHeight(int $height): self
+    {
+        $this->height = $height;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getHeight(): ?int
+    {
+        return $this->height;
     }
 }
