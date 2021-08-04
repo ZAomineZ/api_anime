@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AnimeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -30,13 +31,15 @@ use Symfony\Component\Validator\Constraints as Assert;
                                 'name' => ['type' => 'string'],
                                 'slug' => ['type' => 'string'],
                                 'content' => ['type' => 'string'],
-                                'type_anime' => ['type' => 'string']
+                                'type_anime' => ['type' => 'string'],
+                                'tag' => ['type' => 'string']
                             ],
                             'example' => [
                                 'name' => 'One piece',
                                 'slug' => 'one-piece',
                                 'content' => 'Description de test...',
-                                'type_anime' => '/api/type_animes/{id}'
+                                'type_anime' => '/api/type_animes/{id}',
+                                'tag' => '/api/tag/{id}'
                             ]
                         ]
                     ]
@@ -123,11 +126,18 @@ class Anime
     private $characters;
 
     /**
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="animes")
+     */
+    #[Groups(['create:anime', 'read:anime'])]
+    private $tag;
+
+    /**
      * Anime constructor.
      */
     #[Pure] public function __construct()
     {
         $this->characters = new ArrayCollection();
+        $this->tag = new ArrayCollection();
     }
 
     /**
@@ -210,6 +220,38 @@ class Anime
     public function setTypeAnime(?TypeAnime $type_anime): self
     {
         $this->type_anime = $type_anime;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTag(): Collection
+    {
+        return $this->tag;
+    }
+
+    /**
+     * @param Tag $tag
+     * @return $this
+     */
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tag->contains($tag)) {
+            $this->tag[] = $tag;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Tag $tag
+     * @return $this
+     */
+    public function removeTag(Tag $tag): self
+    {
+        $this->tag->removeElement($tag);
 
         return $this;
     }

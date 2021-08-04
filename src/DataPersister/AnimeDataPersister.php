@@ -51,7 +51,6 @@ final class AnimeDataPersister implements ContextAwareDataPersisterInterface
      */
     public function persist($data, array $context = [])
     {
-        dd($data);
         $slug = $data->getSlug();
         if ($this->slugger->slug($slug)->toString() !== $slug) throw new NotSlugValid('Ceci n\'est pas un slug valid.');
 
