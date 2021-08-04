@@ -36,7 +36,7 @@ class FieldNameExistSubscriber implements EventSubscriberInterface
     #[ArrayShape([KernelEvents::VIEW => "array"])] public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::VIEW => ['post', EventPriorities::POST_WRITE],
+            KernelEvents::VIEW => ['post', EventPriorities::PRE_WRITE],
         ];
     }
 
@@ -60,7 +60,7 @@ class FieldNameExistSubscriber implements EventSubscriberInterface
         }
 
         $find = $this->entityManager->getRepository($entity)->findBy(['name' => $result->getName()]);
-        if ($find) {
+        if (!empty($find)) {
             throw new FieldEntityExist('Ce champs name existe déja dans cette entitée.');
         }
     }

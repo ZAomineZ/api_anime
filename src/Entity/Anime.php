@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=AnimeRepository::class)
+ * @ORM\Table(name="`anime`")
  */
 #[ApiResource(
     collectionOperations: [
@@ -108,18 +109,18 @@ class Anime
     private ?string $content;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Character", mappedBy="character", cascade={"persist"})
-     */
-    #[Groups(['read:anime'])]
-    private $characters;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=TypeAnime::class, inversedBy="animes", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\TypeAnime", inversedBy="animes", cascade={"persist"})
      */
     #[
         Groups(['create:anime', 'read:anime', 'read:character'])
     ]
-    private ?TypeAnime $type_anime;
+    private ?TypeAnime $type_anime = null;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Character", mappedBy="character", cascade={"persist"})
+     */
+    #[Groups(['read:anime'])]
+    private $characters;
 
     /**
      * Anime constructor.
