@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\AnimeByAuthor;
 use App\Controller\AnimeByTag;
 use App\Repository\AnimeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -52,6 +53,13 @@ use Symfony\Component\Validator\Constraints as Assert;
         'method' => 'GET',
         'path' => '/animes/{tag}/tag',
         'controller' => AnimeByTag::class,
+        'normalization_context' => ['groups' => ['read:anime']],
+        'read' => false
+    ],
+    'get_by_author' => [
+        'method' => 'GET',
+        'path' => '/animes/{author}/author',
+        'controller' => AnimeByAuthor::class,
         'normalization_context' => ['groups' => ['read:anime']],
         'read' => false
     ]
@@ -138,6 +146,12 @@ class Anime
      */
     #[Groups(['create:anime', 'read:anime'])]
     private $tag;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Author::class, inversedBy="animes", cascade={"persist"})
+     */
+    #[Groups(['create:anime', 'read:anime'])]
+    private ?Author $author;
 
     /**
      * Anime constructor.
@@ -260,6 +274,25 @@ class Anime
     public function removeTag(Tag $tag): self
     {
         $this->tag->removeElement($tag);
+
+        return $this;
+    }
+
+    /**
+     * @return Author|null
+     */
+    public function getAuthor(): ?Author
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param Author|null $author
+     * @return $this
+     */
+    public function setAuthor(?Author $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

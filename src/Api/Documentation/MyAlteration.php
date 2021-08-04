@@ -116,6 +116,33 @@ class MyAlteration implements NormalizerInterface
         ];
         $docs['paths']['/api/animes/{tag}/tag']['get'] = array_merge($pathGetAnimesByTag, $customDocsGetAnimesByTag);
 
+        $pathGetAnimesByAuthor = $docs['paths']['/api/animes/{author}/author']['get'];
+        $customDocsGetAnimesByAuthor = [
+            'parameters' => [
+                [
+                    'name' => 'author',
+                    'in' => 'path',
+                    'description' => 'Trouver les animes en fonction de l\'auteur.',
+                    'type' => 'string',
+                    'required' => true,
+                    'example' => 'eiichiro-oda'
+                ]
+            ],
+            'responses' => [
+                200 => [
+                    'description' => 'Voici les animes en fontion de votre author',
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                '$ref' => '#components/schemas/Anime-read.character'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $docs['paths']['/api/animes/{author}/author']['get'] = array_merge($pathGetAnimesByAuthor, $customDocsGetAnimesByAuthor);
+
         $pathPostCharacterImage = $docs['paths']['/api/characters/{id}/image']['post'];
         $customDocPostCharacterImage = [
             'responses' => [
