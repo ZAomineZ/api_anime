@@ -14,7 +14,36 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=AnimeRepository::class)
  */
 #[ApiResource(
-    collectionOperations: ['get', 'post'],
+    collectionOperations: [
+    'get',
+    'post' => [
+        'openapi_context' => [
+            'summary' => 'Création d\'un anime',
+            'description' => 'Vous pouvez créer votre anime avec les champs indiqué !',
+            'requestBody' => [
+                'content' => [
+                    'application/json' => [
+                        'schema' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'name' => ['type' => 'string'],
+                                'slug' => ['type' => 'string'],
+                                'content' => ['type' => 'string'],
+                                'type_anime' => ['type' => 'string']
+                            ],
+                            'example' => [
+                                'name' => 'One piece',
+                                'slug' => 'one-piece',
+                                'content' => 'Description de test...',
+                                'type_anime' => '/api/type_animes/{id}'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ],
+],
     itemOperations: ['get', 'put', 'delete'],
     denormalizationContext: [
     'groups' => ['create:anime']
@@ -85,6 +114,14 @@ class Anime
     private $characters;
 
     /**
+     * @ORM\ManyToOne(targetEntity=TypeAnime::class, inversedBy="animes", cascade={"persist"})
+     */
+    #[
+        Groups(['create:anime', 'read:anime', 'read:character'])
+    ]
+    private ?TypeAnime $type_anime;
+
+    /**
      * Anime constructor.
      */
     #[Pure] public function __construct()
@@ -92,16 +129,26 @@ class Anime
         $this->characters = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -109,11 +156,18 @@ class Anime
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getSlug(): ?string
     {
         return $this->slug;
     }
 
+    /**
+     * @param string $slug
+     * @return $this
+     */
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
@@ -121,14 +175,40 @@ class Anime
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getContent(): ?string
     {
         return $this->content;
     }
 
+    /**
+     * @param string $content
+     * @return $this
+     */
     public function setContent(string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * @return TypeAnime|null
+     */
+    public function getTypeAnime(): ?TypeAnime
+    {
+        return $this->type_anime;
+    }
+
+    /**
+     * @param TypeAnime|null $type_anime
+     * @return $this
+     */
+    public function setTypeAnime(?TypeAnime $type_anime): self
+    {
+        $this->type_anime = $type_anime;
 
         return $this;
     }

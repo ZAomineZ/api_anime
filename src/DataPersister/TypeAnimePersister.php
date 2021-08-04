@@ -6,11 +6,10 @@ namespace App\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use App\Entity\Character;
-use App\Exception\NotSlugValid;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-final class CharacterDataPersister implements ContextAwareDataPersisterInterface
+final class TypeAnimePersister implements ContextAwareDataPersisterInterface
 {
     /**
      * @var EntityManagerInterface
@@ -43,16 +42,12 @@ final class CharacterDataPersister implements ContextAwareDataPersisterInterface
     }
 
     /**
-     * @param Character $data
+     * @param $data
      * @param array $context
      * @return object|void
-     * @throws NotSlugValid
      */
     public function persist($data, array $context = [])
     {
-        $slug = $data->getSlug();
-        if ($this->slugger->slug($slug)->toString() !== $slug) throw new NotSlugValid('Ceci n\'est pas un slug valid.');
-
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }
