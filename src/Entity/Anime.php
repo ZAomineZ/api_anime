@@ -21,8 +21,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ApiResource(
     collectionOperations: [
-    'get',
+    'get' => [
+        'access_control' => "is_granted('ROLE_USER')"
+    ],
     'post' => [
+        'access_control' => "is_granted('ROLE_ADMIN')",
         'openapi_context' => [
             'summary' => 'Création d\'un anime',
             'description' => 'Vous pouvez créer votre anime avec les champs indiqué !',
@@ -59,6 +62,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     'get_by_tag' => [
         'method' => 'GET',
+        'access_control' => "is_granted('ROLE_USER')",
         'path' => '/animes/{tag}/tag',
         'controller' => AnimeByTag::class,
         'normalization_context' => ['groups' => ['read:anime']],
@@ -66,6 +70,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     'get_by_author' => [
         'method' => 'GET',
+        'access_control' => "is_granted('ROLE_USER')",
         'path' => '/animes/{author}/author',
         'controller' => AnimeByAuthor::class,
         'normalization_context' => ['groups' => ['read:anime']],
@@ -73,13 +78,24 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     'get_by_firstBroadcast' => [
         'method' => 'GET',
+        'access_control' => "is_granted('ROLE_USER')",
         'path' => '/animes/{year}/firstBroadcast',
         'controller' => AnimeByYearToFirstBroadcast::class,
         'normalization_context' => ['groups' => ['read:anime']],
         'read' => false
     ]
 ],
-    itemOperations: ['get', 'put', 'delete'],
+    itemOperations: [
+        'get' => [
+            'access_control' => "is_granted('ROLE_USER')"
+        ],
+        'put' => [
+            'access_control' => "is_granted('ROLE_ADMIN')"
+        ],
+        'delete' => [
+            'access_control' => "is_granted('ROLE_ADMIN')"
+        ]
+    ],
     denormalizationContext: [
     'groups' => ['create:anime']
 ],

@@ -27,8 +27,11 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[
     ApiResource(
         collectionOperations: [
-        'get',
+        'get' => [
+            'access_control' => "is_granted('ROLE_USER')"
+        ],
         'post' => [
+            'access_control' => "is_granted('ROLE_ADMIN')",
             'openapi_context' => [
                 'summary' => 'Création d\'un personnage',
                 'description' => 'Vous pouvez créer votre personnage d\'anime avec les champs indiqué !',
@@ -62,6 +65,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
             ]
         ],
         'post_image' => [
+            'access_control' => "is_granted('ROLE_ADMIN')",
             'method' => 'POST',
             'path' => '/characters/{id}/image',
             'deserialize' => false,
@@ -87,6 +91,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
             ]
         ],
         'get_by_genre' => [
+            'access_control' => "is_granted('ROLE_USER')",
             'method' => 'GET',
             'path' => '/characters/genre/{genre}',
             'controller' => CharacterByGenre::class,
@@ -96,12 +101,18 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
     ],
         itemOperations: [
         'get' => [
+            'access_control' => "is_granted('ROLE_USER')",
             'normalization_context' => ['groups' => ['read:character', 'read:image']]
         ],
-        'put',
-        'delete',
+        'put' => [
+            'access_control' => "is_granted('ROLE_ADMIN')"
+        ],
+        'delete' => [
+            'access_control' => "is_granted('ROLE_ADMIN')"
+        ],
         'get_by_slug' => [
             'method' => 'GET',
+            'access_control' => "is_granted('ROLE_USER')",
             'path' => '/characters/slug/{slug}',
             'controller' => CharacterBySlug::class,
             'normalization_context' => ['groups' => ['read:character']],

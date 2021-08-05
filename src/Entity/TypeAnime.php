@@ -16,8 +16,25 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=TypeAnimeRepository::class)
  */
 #[ApiResource(
-    collectionOperations: ['get', 'post'],
-    itemOperations: ['get', 'put', 'delete'],
+    collectionOperations: [
+    'get' => [
+        'access_control' => "is_granted('ROLE_USER')"
+    ],
+    'post' => [
+        'access_control' => "is_granted('ROLE_ADMIN')"
+    ]
+],
+    itemOperations: [
+    'get' => [
+        'access_control' => "is_granted('ROLE_USER')"
+    ],
+    'put' => [
+        'access_control' => "is_granted('ROLE_ADMIN')"
+    ],
+    'delete' => [
+        'access_control' => "is_granted('ROLE_ADMIN')"
+    ]
+],
     denormalizationContext: ['groups' => ['create:type_anime']],
     normalizationContext: ['groups' => ['read:type_anime']]
 )]
