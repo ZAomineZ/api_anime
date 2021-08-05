@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use App\Controller\AnimeByAuthor;
 use App\Controller\AnimeByTag;
 use App\Controller\AnimeByYearToFirstBroadcast;
@@ -102,7 +104,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: [
         'groups' => ['read:anime']
     ]
-)]
+),
+    ApiFilter(OrderFilter::class, properties: ['episodes' => 'ASC'])
+]
 class Anime
 {
     /**
