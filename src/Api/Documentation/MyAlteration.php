@@ -143,6 +143,33 @@ class MyAlteration implements NormalizerInterface
         ];
         $docs['paths']['/api/animes/{author}/author']['get'] = array_merge($pathGetAnimesByAuthor, $customDocsGetAnimesByAuthor);
 
+        $pathGetAnimesByFirstBroadcast = $docs['paths']['/api/animes/{year}/firstBroadcast']['get'];
+        $customDocsGetAnimesByFirstBroadcast = [
+            'parameters' => [
+                [
+                    'name' => 'year',
+                    'in' => 'path',
+                    'description' => 'Trouver les animes en fonction de l\'année de création.',
+                    'type' => 'string',
+                    'required' => true,
+                    'example' => '2020'
+                ]
+            ],
+            'responses' => [
+                200 => [
+                    'description' => 'Voici les animes en fontion de l\'année de création',
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                '$ref' => '#components/schemas/Anime-read.anime'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $docs['paths']['/api/animes/{year}/firstBroadcast']['get'] = array_merge($pathGetAnimesByFirstBroadcast, $customDocsGetAnimesByFirstBroadcast);
+
         $pathPostCharacterImage = $docs['paths']['/api/characters/{id}/image']['post'];
         $customDocPostCharacterImage = [
             'responses' => [

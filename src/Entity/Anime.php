@@ -5,7 +5,9 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\AnimeByAuthor;
 use App\Controller\AnimeByTag;
+use App\Controller\AnimeByYearToFirstBroadcast;
 use App\Repository\AnimeRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -34,14 +36,20 @@ use Symfony\Component\Validator\Constraints as Assert;
                                 'slug' => ['type' => 'string'],
                                 'content' => ['type' => 'string'],
                                 'type_anime' => ['type' => 'string'],
-                                'tag' => ['type' => 'string']
+                                'tag' => ['type' => 'string'],
+                                'author' => ['type' => 'string'],
+                                'first_broadcast' => ['type' => 'string'],
+                                'episodes' => ['type' => 'string']
                             ],
                             'example' => [
                                 'name' => 'One piece',
                                 'slug' => 'one-piece',
                                 'content' => 'Description de test...',
                                 'type_anime' => '/api/type_animes/{id}',
-                                'tag' => '/api/tag/{id}'
+                                'tag' => '/api/tag/{id}',
+                                'author' => '/api/author/{id}',
+                                'first_broadcast' => '2020-08-15',
+                                'episodes' => 24
                             ]
                         ]
                     ]
@@ -60,6 +68,13 @@ use Symfony\Component\Validator\Constraints as Assert;
         'method' => 'GET',
         'path' => '/animes/{author}/author',
         'controller' => AnimeByAuthor::class,
+        'normalization_context' => ['groups' => ['read:anime']],
+        'read' => false
+    ],
+    'get_by_firstBroadcast' => [
+        'method' => 'GET',
+        'path' => '/animes/{year}/firstBroadcast',
+        'controller' => AnimeByYearToFirstBroadcast::class,
         'normalization_context' => ['groups' => ['read:anime']],
         'read' => false
     ]
@@ -152,6 +167,25 @@ class Anime
      */
     #[Groups(['create:anime', 'read:anime'])]
     private ?Author $author;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    #[
+        Assert\NotBlank(message: 'Ce champs doit être requis'),
+        Groups(['create:anime', 'read:anime'])
+    ]
+    private ?DateTime $firstBroadcast;
+
+    /**
+     * @ORM\Column(type="integer", length=10)
+     */
+    #[
+        Assert\NotBlank(message: 'Ce champs doit être requis'),
+        Assert\Positive(message: 'Ce champs doit être un nombre positive'),
+        Groups(['create:anime', 'read:anime'])
+    ]
+    private ?string $episodes;
 
     /**
      * Anime constructor.
@@ -293,6 +327,44 @@ class Anime
     public function setAuthor(?Author $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getFirstBroadcast(): ?DateTime
+    {
+        return $this->firstBroadcast;
+    }
+
+    /**
+     * @param DateTime $first_broadcast
+     * @return $this
+     */
+    public function setFirstBroadcast(DateTime $first_broadcast): self
+    {
+        $this->firstBroadcast = $first_broadcast;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEpisodes(): ?string
+    {
+        return $this->episodes;
+    }
+
+    /**
+     * @param string $episodes
+     * @return $this
+     */
+    public function setEpisodes(string $episodes): self
+    {
+        $this->episodes = $episodes;
 
         return $this;
     }

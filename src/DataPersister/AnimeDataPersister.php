@@ -44,7 +44,7 @@ final class AnimeDataPersister implements ContextAwareDataPersisterInterface
     }
 
     /**
-     * @param Character $data
+     * @param Anime $data
      * @param array $context
      * @return object|void
      * @throws NotSlugValid

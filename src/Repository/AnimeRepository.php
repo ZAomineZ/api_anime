@@ -48,4 +48,18 @@ class AnimeRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * @param string $year
+     * @return array
+     */
+    public function findAllByFirstBroadcast(string $year): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.firstBroadcast BETWEEN :start_date AND :end_date')
+            ->setParameter('start_date', (new \DateTime())->format("$year-01-01"))
+            ->setParameter('end_date', (new \DateTime())->format("$year-12-31"))
+            ->getQuery()
+            ->getResult();
+    }
 }
