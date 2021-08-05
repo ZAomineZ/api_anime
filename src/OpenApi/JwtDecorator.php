@@ -57,7 +57,7 @@ final class JwtDecorator implements OpenApiFactoryInterface
             ref: 'JWT Token',
             post: new Operation(
                 operationId: 'postCredentialsLoginItem',
-                tags: ['Token'],
+                tags: ['Auth'],
                 responses: [
                 '200' => [
                     'description' => 'Votre JWT Token',
@@ -83,7 +83,7 @@ final class JwtDecorator implements OpenApiFactoryInterface
                 )
             )
         );
-        $paths->addPath('/login', $pathItemLogin);
+        $paths->addPath('/api/login', $pathItemLogin);
 
         # Register Route
         $schemas['UserResponse'] = new ArrayObject([
@@ -128,7 +128,7 @@ final class JwtDecorator implements OpenApiFactoryInterface
             ref: 'Register User',
             post: new Operation(
                 operationId: 'postCredentialsRegisterItem',
-                tags: ['Token'],
+                tags: ['Auth'],
                 responses: [
                 '200' => [
                     'description' => 'Votre utilisateur créé',
@@ -154,8 +154,20 @@ final class JwtDecorator implements OpenApiFactoryInterface
                 )
             )
         );
+        $paths->addPath('/api/register', $pathItemRegister);
 
-        $paths->addPath('/register', $pathItemRegister);
+        # Logout route
+        $pathItem = new PathItem(
+            get: new Operation(
+                operationId: 'getApiLogout',
+                tags: ['Auth'],
+                responses: [
+                    '204' => []
+                ]
+            )
+        );
+        $openApi->getPaths()->addPath('/api/logout', $pathItem);
+
         return $openApi;
     }
 }

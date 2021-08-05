@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -93,5 +94,11 @@ class SecurityController extends AbstractController
             'email' => $user->getEmail(),
             'createdAt' => $user->getCreatedAt()->format('Y-m-d H:i:s')
         ]);
+    }
+
+    #[Route(path: '/api/logout', name: 'api_logout', methods: 'GET')]
+    public function logout(): void
+    {
+        throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }
