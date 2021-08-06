@@ -161,14 +161,31 @@ final class JwtDecorator implements OpenApiFactoryInterface
         $paths->addPath('/api/register', $pathItemRegister);
 
         # Logout route
+        $schemas['LogoutResponse'] = new ArrayObject([
+            'type' => 'object',
+            'properties' => [
+                'message' => [
+                    'type' => 'string'
+                ]
+            ]
+        ]);
         $pathItem = new PathItem(
             get: new Operation(
                 operationId: 'getApiLogout',
                 tags: ['Auth'],
                 responses: [
-                    '204' => []
-                ],
-                summary: 'Déconnectez-vous'
+                '200' => [
+                    'description' => 'Votre utilisateur est déconnecté',
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                '$ref' => '#/components/schemas/LogoutResponse'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+                summary: 'Déconnectez votre utilisateur'
             )
         );
         $openApi->getPaths()->addPath('/api/logout', $pathItem);
@@ -178,7 +195,8 @@ final class JwtDecorator implements OpenApiFactoryInterface
             'type' => 'object',
             'properties' => [
                 'refresh_token' => [
-                    'type' => 'string'
+                    'type' => 'string',
+                    'readOnly' => true
                 ]
             ]
         ]);
