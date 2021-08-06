@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,11 +23,13 @@ class SecurityController extends AbstractController
     /**
      * SecurityController constructor.
      * @param EntityManagerInterface $entityManager
+     * @param Connection $connection
      * @param UserRepository $userRepository
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private Connection $connection,
         private UserRepository $userRepository,
         private TokenStorageInterface $tokenStorage
     )
@@ -106,6 +110,7 @@ class SecurityController extends AbstractController
 
     /**
      * @return JsonResponse
+     * @throws Exception
      */
     #[Route(path: '/api/logout', name: 'api_logout', methods: 'GET')]
     public function logout(): JsonResponse
@@ -115,9 +120,10 @@ class SecurityController extends AbstractController
         if (is_null($authenticatedUser)) return new JsonResponse(['error' => 'Vous devez être connecté pour réaliser cette action.']);
 
         // Delete last refresh_token find in the database
-        $refreshTokenUser = $this->userRepository->findOneBy(['username' => $authenticatedUser->getUserIdentifier()]);
-        if ($refreshTokenUser) {
-            dd($refreshTokenUser);
-        }
+        $this->connection->executeStatement(sprintf(
+            'DELETE FROM refresh_tokens WHERE username = "%s"'
+            , $authenticatedUser->getUserIdentifier()));
+        $this->tokenStorage->setToken(null);
+        return new JsonResponse(['message' => 'Vous êtes maitenant déconnecté']);
     }
 }
