@@ -1,0 +1,6 @@
+resources:
+  App\Entity\Character:
+    shortName: 'Personnage'
+    description: 'Gestion des personnages'
+    attributes:
+      pagination_items_per_page: 25
