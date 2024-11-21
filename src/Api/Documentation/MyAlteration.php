@@ -41,7 +41,7 @@ class MyAlteration implements NormalizerInterface
                 [
                     'name' => 'slug',
                     'in' => 'path',
-                    'description' => 'Trouver votre personnage avec le slug de ce dernier.',
+                    'description' => 'Find your character with his slug.',
                     'type' => 'string',
                     'required' => true,
                     'example' => 'luffy'
@@ -49,7 +49,7 @@ class MyAlteration implements NormalizerInterface
             ],
             'responses' => [
                 200 => [
-                    'description' => 'Voici votre personnage',
+                    'description' => 'This is your character',
                     'content' => [
                         'application/json' => [
                             'schema' => [
@@ -68,15 +68,15 @@ class MyAlteration implements NormalizerInterface
                 [
                     'name' => 'genre',
                     'in' => 'path',
-                    'description' => 'Trouver votre personnage avec le genre de ce dernier.',
+                    'description' => "Find your character's gender.",
                     'type' => 'string',
                     'required' => true,
-                    'example' => 'homme|femmee'
+                    'example' => 'man|woman'
                 ]
             ],
             'responses' => [
                 200 => [
-                    'description' => 'Voici votre personnage',
+                    'description' => 'This is your character',
                     'content' => [
                         'application/json' => [
                             'schema' => [
@@ -95,7 +95,7 @@ class MyAlteration implements NormalizerInterface
                 [
                     'name' => 'tag',
                     'in' => 'path',
-                    'description' => 'Trouver les animes en fonction de votre tag.',
+                    'description' => 'Find anime according to your tag.',
                     'type' => 'string',
                     'required' => true,
                     'example' => 'combat'
@@ -103,7 +103,7 @@ class MyAlteration implements NormalizerInterface
             ],
             'responses' => [
                 200 => [
-                    'description' => 'Voici les animes en fontion de votre tag',
+                    'description' => 'Here are the animes according to your tag',
                     'content' => [
                         'application/json' => [
                             'schema' => [
@@ -122,7 +122,7 @@ class MyAlteration implements NormalizerInterface
                 [
                     'name' => 'author',
                     'in' => 'path',
-                    'description' => 'Trouver les animes en fonction de l\'auteur.',
+                    'description' => 'Find anime by author.',
                     'type' => 'string',
                     'required' => true,
                     'example' => 'eiichiro-oda'
@@ -130,7 +130,7 @@ class MyAlteration implements NormalizerInterface
             ],
             'responses' => [
                 200 => [
-                    'description' => 'Voici les animes en fontion de votre author',
+                    'description' => 'Here are the animes according to your author',
                     'content' => [
                         'application/json' => [
                             'schema' => [
@@ -149,7 +149,7 @@ class MyAlteration implements NormalizerInterface
                 [
                     'name' => 'year',
                     'in' => 'path',
-                    'description' => 'Trouver les animes en fonction de l\'année de création.',
+                    'description' => 'Find anime by year of creation.',
                     'type' => 'string',
                     'required' => true,
                     'example' => '2020'
@@ -157,7 +157,7 @@ class MyAlteration implements NormalizerInterface
             ],
             'responses' => [
                 200 => [
-                    'description' => 'Voici les animes en fontion de l\'année de création',
+                    'description' => 'Here are the anime by year of creation',
                     'content' => [
                         'application/json' => [
                             'schema' => [
@@ -174,7 +174,7 @@ class MyAlteration implements NormalizerInterface
         $customDocPostCharacterImage = [
             'responses' => [
                 200 => [
-                    'description' => 'Voici l\'image du personnage courant',
+                    'description' => "Here's the image of the current character",
                     'content' => [
                         'application/json' => [
                             'schema' => [

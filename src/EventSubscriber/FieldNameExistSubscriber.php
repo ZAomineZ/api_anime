@@ -44,7 +44,7 @@ class FieldNameExistSubscriber implements EventSubscriberInterface
      * @param ViewEvent $event
      * @throws FieldEntityExist
      */
-    public function post(ViewEvent $event)
+    public function post(ViewEvent $event): void
     {
         $result = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
@@ -66,7 +66,7 @@ class FieldNameExistSubscriber implements EventSubscriberInterface
 
         $find = $this->entityManager->getRepository($entity)->findBy(['name' => $result->getName()]);
         if (!empty($find)) {
-            throw new FieldEntityExist('Ce champs name existe déja dans cette entitée.');
+            throw new FieldEntityExist('This name field already exists in this entity.');
         }
     }
 }

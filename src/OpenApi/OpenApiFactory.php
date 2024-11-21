@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\OpenApi;
 
-use ApiPlatform\Core\OpenApi\Factory\OpenApiFactoryInterface;
 use ApiPlatform\Core\OpenApi\Model;
-use ApiPlatform\Core\OpenApi\OpenApi;
+use ApiPlatform\OpenApi\Factory\OpenApiFactoryInterface;
+use ApiPlatform\OpenApi\OpenApi;
 
-class OpenApiFactory implements OpenApiFactoryInterface
+final class OpenApiFactory implements OpenApiFactoryInterface
 {
     /**
      * @var OpenApiFactoryInterface

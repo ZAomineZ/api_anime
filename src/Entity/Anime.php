@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -29,8 +30,8 @@ use Symfony\Component\Validator\Constraints as Assert;
     'post' => [
         'access_control' => "is_granted('ROLE_ADMIN')",
         'openapi_context' => [
-            'summary' => 'Création d\'un anime',
-            'description' => 'Vous pouvez créer votre anime avec les champs indiqué !',
+            'summary' => 'Creating an anime',
+            'description' => 'You can create your anime with the fields indicated !',
             'requestBody' => [
                 'content' => [
                     'application/json' => [
@@ -41,7 +42,13 @@ use Symfony\Component\Validator\Constraints as Assert;
                                 'slug' => ['type' => 'string'],
                                 'content' => ['type' => 'string'],
                                 'type_anime' => ['type' => 'string'],
-                                'tag' => ['type' => 'string'],
+                                'tag' => [
+                                    'type' => 'string',
+                                    'items' => [
+                                        'type' => 'string',
+                                        'example' => '/api/tags/{id}'
+                                    ]
+                                ],
                                 'author' => ['type' => 'string'],
                                 'first_broadcast' => ['type' => 'string'],
                                 'episodes' => ['type' => 'string']
@@ -49,9 +56,9 @@ use Symfony\Component\Validator\Constraints as Assert;
                             'example' => [
                                 'name' => 'One piece',
                                 'slug' => 'one-piece',
-                                'content' => 'Description de test...',
+                                'content' => 'Content content...',
                                 'type_anime' => '/api/type_animes/{id}',
-                                'tag' => '/api/tag/{id}',
+                                'tag' => ['/api/tag/{id}'],
                                 'author' => '/api/author/{id}',
                                 'first_broadcast' => '2020-08-15',
                                 'episodes' => 24
@@ -121,12 +128,12 @@ class Anime
      * @ORM\Column(type="string", length=255)
      */
     #[
-        Assert\NotBlank(message: 'Ce champs doit être requis'),
+        Assert\NotBlank(message: 'This field must be required'),
         Assert\Length(
             min: 3,
             max: 255,
-            minMessage: 'Ce champs doit possédait au minimum 3 caractères',
-            maxMessage: 'Ce champs doit possédait au maximum 255 caractères'
+            minMessage: 'This field must contain at least 3 characters',
+            maxMessage: 'This field must contain a maximum of 255 characters'
         ),
         Groups(['create:anime', 'read:anime', 'read:character'])
     ]
@@ -136,12 +143,12 @@ class Anime
      * @ORM\Column(type="string", length=255)
      */
     #[
-        Assert\NotBlank(message: 'Ce champs doit être requis'),
+        Assert\NotBlank(message: 'This field must be required'),
         Assert\Length(
             min: 3,
             max: 255,
-            minMessage: 'Ce champs doit possédait au minimum 3 caractères',
-            maxMessage: 'Ce champs doit possédait au maximum 255 caractères'
+            minMessage: 'This field must contain at least 3 characters',
+            maxMessage: 'This field must contain a maximum of 255 characters'
         ),
         Groups(['create:anime', 'read:anime'])
     ]
@@ -151,12 +158,12 @@ class Anime
      * @ORM\Column(type="text")
      */
     #[
-        Assert\NotBlank(message: 'Ce champs doit être requis'),
+        Assert\NotBlank(message: 'This field must be required'),
         Assert\Length(
             min: 15,
             max: 255,
-            minMessage: 'Ce champs doit possédait au minimum 15 caractères',
-            maxMessage: 'Ce champs doit possédait au maximum 255 caractères'
+            minMessage: 'This field must contain at least 15 characters',
+            maxMessage: 'This field must contain a maximum of 255 characters'
         ),
         Groups(['create:anime', 'read:anime'])
     ]
@@ -192,8 +199,9 @@ class Anime
      * @ORM\Column(type="date", nullable=true)
      */
     #[
-        Assert\NotBlank(message: 'Ce champs doit être requis'),
-        Groups(['create:anime', 'read:anime'])
+        Assert\NotBlank(message: 'This field must be required'),
+        Groups(['create:anime', 'read:anime']),
+        SerializedName('first_broadcast')
     ]
     private ?DateTime $firstBroadcast;
 
@@ -201,8 +209,8 @@ class Anime
      * @ORM\Column(type="integer", length=10)
      */
     #[
-        Assert\NotBlank(message: 'Ce champs doit être requis'),
-        Assert\Positive(message: 'Ce champs doit être un nombre positive'),
+        Assert\NotBlank(message: 'This field must be required'),
+        Assert\Positive(message: 'This field must be a positive number'),
         Groups(['create:anime', 'read:anime'])
     ]
     private ?string $episodes;

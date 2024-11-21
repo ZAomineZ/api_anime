@@ -52,7 +52,7 @@ final class AnimeDataPersister implements ContextAwareDataPersisterInterface
     public function persist($data, array $context = [])
     {
         $slug = $data->getSlug();
-        if ($this->slugger->slug($slug)->toString() !== $slug) throw new NotSlugValid('Ceci n\'est pas un slug valid.');
+        if ($this->slugger->slug($slug)->toString() !== $slug) throw new NotSlugValid('This is not a valid slug.');
 
         $this->entityManager->persist($data);
         $this->entityManager->flush();
@@ -62,7 +62,7 @@ final class AnimeDataPersister implements ContextAwareDataPersisterInterface
      * @param $data
      * @param array $context
      */
-    public function remove($data, array $context = [])
+    public function remove($data, array $context = []): void
     {
         $this->entityManager->remove($data);
         $this->entityManager->flush();

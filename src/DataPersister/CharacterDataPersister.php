@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\DataPersister;
-
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use App\Entity\Character;
@@ -51,7 +49,7 @@ final class CharacterDataPersister implements ContextAwareDataPersisterInterface
     public function persist($data, array $context = [])
     {
         $slug = $data->getSlug();
-        if ($this->slugger->slug($slug)->toString() !== $slug) throw new NotSlugValid('Ceci n\'est pas un slug valid.');
+        if ($this->slugger->slug($slug)->toString() !== $slug) throw new NotSlugValid('This is not a valid slug.');
 
         $this->entityManager->persist($data);
         $this->entityManager->flush();
@@ -61,7 +59,7 @@ final class CharacterDataPersister implements ContextAwareDataPersisterInterface
      * @param $data
      * @param array $context
      */
-    public function remove($data, array $context = [])
+    public function remove($data, array $context = []): void
     {
         $this->entityManager->remove($data);
         $this->entityManager->flush();

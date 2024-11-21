@@ -52,12 +52,12 @@ class TypeAnime
      * @ORM\Column(type="string", length=255)
      */
     #[
-        Assert\NotBlank(message: 'Ce champs doit être requis'),
+        Assert\NotBlank(message: 'This field must be required'),
         Assert\Length(
             min: 3,
             max: 255,
-            minMessage: 'Ce champs doit possédait au minimum 3 caractères',
-            maxMessage: 'Ce champs doit possédait au maximum 255 caractères'
+            minMessage: 'This field must contain at least 3 characters',
+            maxMessage: 'This field must contain a maximum of 255 characters'
         ),
         Groups(['read:type_anime', 'read:anime', 'create:type_anime'])
     ]
@@ -67,12 +67,12 @@ class TypeAnime
      * @ORM\Column(type="string", length=255)
      */
     #[
-        Assert\NotBlank(message: 'Ce champs doit être requis'),
+        Assert\NotBlank(message: 'This field must be required'),
         Assert\Length(
             min: 3,
             max: 255,
-            minMessage: 'Ce champs doit possédait au minimum 3 caractères',
-            maxMessage: 'Ce champs doit possédait au maximum 255 caractères'
+            minMessage: 'This field must contain at least 3 characters',
+            maxMessage: 'This field must contain a maximum of 255 characters'
         ),
         Groups(['read:type_anime', 'create:type_anime'])
     ]
@@ -82,12 +82,12 @@ class TypeAnime
      * @ORM\Column(type="text")
      */
     #[
-        Assert\NotBlank(message: 'Ce champs doit être requis'),
+        Assert\NotBlank(message: 'This field must be required'),
         Assert\Length(
             min: 15,
             max: 255,
-            minMessage: 'Ce champs doit possédait au minimum 3 caractères',
-            maxMessage: 'Ce champs doit possédait au maximum 255 caractères'
+            minMessage: 'This field must contain at least 3 characters',
+            maxMessage: 'This field must contain a maximum of 255 characters'
         ),
         Groups(['read:type_anime', 'create:type_anime'])
     ]

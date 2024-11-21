@@ -25,8 +25,7 @@ final class MediaCharacterObjectNormalizer implements ContextAwareNormalizerInte
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(private StorageInterface $storage, private EntityManagerInterface $entityManager)
-    {
-    }
+    {}
 
     /**
      * @param mixed $data
@@ -44,7 +43,7 @@ final class MediaCharacterObjectNormalizer implements ContextAwareNormalizerInte
     /**
      * @param NormalizerInterface $normalizer
      */
-    public function setNormalizer(NormalizerInterface $normalizer)
+    public function setNormalizer(NormalizerInterface $normalizer): void
     {
         $this->normalizer = $normalizer;
     }

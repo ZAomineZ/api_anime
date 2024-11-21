@@ -33,8 +33,7 @@ class SecurityController extends AbstractController
         private UserRepository $userRepository,
         private TokenStorageInterface $tokenStorage
     )
-    {
-    }
+    {}
 
     /**
      * @param Request $request
@@ -54,26 +53,26 @@ class SecurityController extends AbstractController
             'username' => new Length([
                 'min' => 3,
                 'max' => 255,
-                'minMessage' => 'Le champs de l\'username doit contenir au moins 3 caractères.',
-                'maxMessage' => 'Le champs de l\'username doit contenir au maximum 255 caractères.'
+                'minMessage' => 'The username field must contain at least 3 characters.',
+                'maxMessage' => 'The username field must contain a maximum of 255 characters.'
             ]),
             'email' => new Length([
                 'min' => 5,
                 'max' => 255,
-                'minMessage' => 'Le champs de l\'email doit contenir au moins 5 caractères.',
-                'maxMessage' => 'Le champs de l\'email doit contenir au maximum 255 caractères.'
+                'minMessage' => 'The email field must contain at least 5 characters.',
+                'maxMessage' => 'The email field must contain a maximum of 255 characters.'
             ]),
             'password' => new Length([
                 'min' => 5,
                 'max' => 60,
-                'minMessage' => 'Le champs du password doit contenir au moins 5 caractères.',
-                'maxMessage' => 'Le champs du password doit contenir au maximum 60 caractères.'
+                'minMessage' => 'The password field must contain at least 5 characters.',
+                'maxMessage' => 'The password field must contain a maximum of 60 characters.'
             ]),
             'password_confirm' => new Length([
                 'min' => 5,
                 'max' => 60,
-                'minMessage' => 'Le champs du password_confirm doit contenir au moins 5 caractères.',
-                'maxMessage' => 'Le champs du password_confirm doit contenir au maximum 60 caractères.'
+                'minMessage' => 'The password_confirm field must contain at least 5 characters.',
+                'maxMessage' => 'The password_confirm field must contain a maximum of 60 characters.'
             ])
         ]);
 
@@ -84,7 +83,7 @@ class SecurityController extends AbstractController
 
         $password = $data['password'] ?: null;
         $passwordConfirm = $data['password_confirm'] ?: null;
-        if ($password !== $passwordConfirm) return new JsonResponse(['error' => 'Les mot de passe doivent être identiques.']);
+        if ($password !== $passwordConfirm) return new JsonResponse(['error' => 'Passwords must be identical.']);
 
         $user = new User();
         $user
@@ -117,13 +116,13 @@ class SecurityController extends AbstractController
     {
         /** @var User $authenticatedUser */
         $authenticatedUser = $this->tokenStorage->getToken()->getUser();
-        if (is_null($authenticatedUser)) return new JsonResponse(['error' => 'Vous devez être connecté pour réaliser cette action.']);
+        if (is_null($authenticatedUser)) return new JsonResponse(['error' => 'This name field already exists in this entity.']);
 
         // Delete last refresh_token find in the database
         $this->connection->executeStatement(sprintf(
             'DELETE FROM refresh_tokens WHERE username = "%s"'
             , $authenticatedUser->getUserIdentifier()));
         $this->tokenStorage->setToken(null);
-        return new JsonResponse(['message' => 'Vous êtes maitenant déconnecté']);
+        return new JsonResponse(['message' => 'You are now logged out']);
     }
 }

@@ -30,9 +30,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
         private EntityManagerInterface $entityManager,
         private ContainerBagInterface $param,
         private JWTEncoderInterface $JWTEncoder
-    )
-    {
-    }
+    ) {}
 
     /**
      * @param Request $request

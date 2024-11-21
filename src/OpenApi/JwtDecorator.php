@@ -2,11 +2,11 @@
 
 namespace App\OpenApi;
 
-use ApiPlatform\Core\OpenApi\Factory\OpenApiFactoryInterface;
-use ApiPlatform\Core\OpenApi\Model\Operation;
 use ApiPlatform\Core\OpenApi\Model\PathItem;
-use ApiPlatform\Core\OpenApi\Model\RequestBody;
-use ApiPlatform\Core\OpenApi\OpenApi;
+use ApiPlatform\OpenApi\Factory\OpenApiFactoryInterface;
+use ApiPlatform\OpenApi\Model\Operation;
+use ApiPlatform\OpenApi\Model\RequestBody;
+use ApiPlatform\OpenApi\OpenApi;
 use ArrayObject;
 
 final class JwtDecorator implements OpenApiFactoryInterface
@@ -17,8 +17,7 @@ final class JwtDecorator implements OpenApiFactoryInterface
      * @param OpenApiFactoryInterface $decorated
      */
     public function __construct(private OpenApiFactoryInterface $decorated)
-    {
-    }
+    {}
 
     /**
      * @param array $context
@@ -53,7 +52,7 @@ final class JwtDecorator implements OpenApiFactoryInterface
                 ],
                 'password' => [
                     'type' => 'string',
-                    'example' => 'testdetest'
+                    'example' => 'Content content'
                 ]
             ]
         ]);
@@ -64,7 +63,7 @@ final class JwtDecorator implements OpenApiFactoryInterface
                 tags: ['Auth'],
                 responses: [
                 '200' => [
-                    'description' => 'Votre JWT Token',
+                    'description' => 'Your JWT Token',
                     'content' => [
                         'application/json' => [
                             'schema' => [
@@ -74,9 +73,9 @@ final class JwtDecorator implements OpenApiFactoryInterface
                     ]
                 ]
             ],
-                summary: 'Votre JWT Token pour vous connecter',
+                summary: 'Your JWT Token to connect',
                 requestBody: new RequestBody(
-                    description: 'Génère un nouveau JWT Token',
+                    description: 'Generates a new JWT Token',
                     content: new ArrayObject([
                         'application/json' => [
                             'schema' => [
@@ -120,11 +119,11 @@ final class JwtDecorator implements OpenApiFactoryInterface
                 ],
                 'password' => [
                     'type' => 'string',
-                    'example' => 'testdetest'
+                    'example' => 'rootroot'
                 ],
                 'password_confirm' => [
                     'type' => 'string',
-                    'example' => 'testdetest'
+                    'example' => 'rootroot'
                 ]
             ]
         ]);
@@ -135,7 +134,7 @@ final class JwtDecorator implements OpenApiFactoryInterface
                 tags: ['Auth'],
                 responses: [
                 '200' => [
-                    'description' => 'Votre utilisateur créé',
+                    'description' => 'Your user created',
                     'content' => [
                         'application/json' => [
                             'schema' => [
@@ -145,9 +144,9 @@ final class JwtDecorator implements OpenApiFactoryInterface
                     ]
                 ]
             ],
-                summary: 'Créer un utilisateur',
+                summary: 'Create a user',
                 requestBody: new RequestBody(
-                    description: 'Créer un utilisateur avec les champs suivants',
+                    description: 'Create a user with the following fields',
                     content: new ArrayObject([
                         'application/json' => [
                             'schema' => [
@@ -175,7 +174,7 @@ final class JwtDecorator implements OpenApiFactoryInterface
                 tags: ['Auth'],
                 responses: [
                 '200' => [
-                    'description' => 'Votre utilisateur est déconnecté',
+                    'description' => 'Your user is logged out',
                     'content' => [
                         'application/json' => [
                             'schema' => [
@@ -185,7 +184,7 @@ final class JwtDecorator implements OpenApiFactoryInterface
                     ]
                 ]
             ],
-                summary: 'Déconnectez votre utilisateur'
+                summary: 'Log out your user'
             )
         );
         $openApi->getPaths()->addPath('/api/logout', $pathItem);
@@ -207,7 +206,7 @@ final class JwtDecorator implements OpenApiFactoryInterface
                 tags: ['Auth'],
                 responses: [
                 '200' => [
-                    'description' => 'Votre JWT Token et le Refresh Token',
+                    'description' => 'Your JWT Token and Refresh Token',
                     'content' => [
                         'application/json' => [
                             'schema' => [
@@ -217,9 +216,9 @@ final class JwtDecorator implements OpenApiFactoryInterface
                     ]
                 ]
             ],
-                summary: 'Génèrer un JWT Token et un Refresh Token',
+                summary: 'Generate a JWT Token and a Refresh Token',
                 requestBody: new RequestBody(
-                    description: 'Refresh votre token.',
+                    description: 'Refresh your token.',
                     content: new ArrayObject([
                         'application/json' => [
                             'schema' => [

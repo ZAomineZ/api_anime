@@ -33,8 +33,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
         'post' => [
             'access_control' => "is_granted('ROLE_ADMIN')",
             'openapi_context' => [
-                'summary' => 'Création d\'un personnage',
-                'description' => 'Vous pouvez créer votre personnage d\'anime avec les champs indiqué !',
+                'summary' => 'Creating a character',
+                'description' => 'You can create your anime character with the fields indicated !',
                 'requestBody' => [
                     'content' => [
                         'application/json' => [
@@ -52,11 +52,11 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
                                 'example' => [
                                     'name' => 'Luffy',
                                     'slug' => 'luffy',
-                                    'content' => 'Description de test...',
-                                    'genre' => 'homme|femme',
+                                    'content' => 'Content content...',
+                                    'genre' => 'man|woman',
                                     'age' => 20,
                                     'height' => 185,
-                                    'anime' => '/api/{entity}/{param}'
+                                    'anime' => '/api/animes/{id}'
                                 ]
                             ]
                         ]
@@ -93,7 +93,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
         'get_by_genre' => [
             'access_control' => "is_granted('ROLE_USER')",
             'method' => 'GET',
-            'path' => '/characters/genre/{genre}',
+            'path' => '/characters/gender/{gender}',
             'controller' => CharacterByGenre::class,
             'normalization_context' => ['groups' => ['read:character']],
             'read' => false
@@ -151,12 +151,12 @@ class Character
      * @ORM\Column(type="string", length=255)
      */
     #[
-        Assert\NotBlank(message: 'Ce champs doit être requis'),
+        Assert\NotBlank(message: 'This field must be required'),
         Assert\Length(
             min: 3,
             max: 255,
-            minMessage: 'Ce champs doit possédait au minimum 3 caractères',
-            maxMessage: 'Ce champs doit possédait au maximum 255 caractères'
+            minMessage: 'This field must contain at least 3 characters',
+            maxMessage: 'This field must contain a maximum of 255 characters'
         ),
         Groups(['read:character', 'create:character'])
     ]
@@ -166,12 +166,12 @@ class Character
      * @ORM\Column(type="string", length=255)
      */
     #[
-        Assert\NotBlank(message: 'Ce champs doit être requis'),
+        Assert\NotBlank(message: 'This field must be required'),
         Assert\Length(
             min: 3,
             max: 255,
-            minMessage: 'Ce champs doit possédait au minimum 3 caractères',
-            maxMessage: 'Ce champs doit possédait au maximum 255 caractères'
+            minMessage: 'This field must contain at least 3 characters',
+            maxMessage: 'This field must contain a maximum of 255 characters'
         ),
         Groups(['read:character', 'create:character'])
     ]
@@ -181,12 +181,12 @@ class Character
      * @ORM\Column(type="string", length=255)
      */
     #[
-        Assert\NotBlank(message: 'Ce champs doit être requis'),
+        Assert\NotBlank(message: 'This field must be required'),
         Assert\Length(
             min: 15,
             max: 255,
-            minMessage: 'Ce champs doit possédait au minimum 15 caractères',
-            maxMessage: 'Ce champs doit possédait au maximum 255 caractères'
+            minMessage: 'This field must contain at least 15 characters',
+            maxMessage: 'This field must contain a maximum of 255 characters'
         ),
         Groups(['read:character', 'create:character'])
     ]
@@ -196,7 +196,7 @@ class Character
      * @ORM\Column(type="string", length=8)
      */
     #[
-        Assert\Choice(['femme', 'homme'], message: 'Vous devez choisir entre "homme" ou "femme" pour ce champs.'),
+        Assert\Choice(['woman', 'man'], message: 'You must choose between “man” or “woman” for this field.'),
         Groups(['read:character', 'create:character'])
     ]
     private ?string $genre;
