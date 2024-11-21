@@ -39,7 +39,7 @@ This project is a RESTful API built with Symfony and API Platform, designed to m
 3. Configure the environment:
 
     ```bash
-    cp .env .env.local
+    cp .env.local .env
     ```
 
     Update the variables to include your database credentials:
