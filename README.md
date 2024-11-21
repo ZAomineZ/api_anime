@@ -26,8 +26,8 @@ This project is a RESTful API built with Symfony and API Platform, designed to m
 1. Clone the repository:
 
    ```bash  
-   git clone https://github.com/your-repo/api-anime-platform.git  
-   cd api-anime-platform  
+   git clone https://github.com/ZAomineZ/api_anime.git  
+   cd api_anime 
    ```
 
 2. Install dependencies:
